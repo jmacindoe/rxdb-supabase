@@ -189,7 +189,12 @@ export class SupabaseReplication<RxDocType> extends RxReplicationState<
       query = query.or(`${isNewer},and(${isSameAge},${this.primaryKey}.gt.${lastPrimaryKey})`)
     }
     query = query.order(this.lastModifiedFieldName).order(this.primaryKey).limit(batchSize)
-    //console.debug("Pulling changes since", lastCheckpoint?.modified, "with query", (query as any)['url'].toString())
+    console.debug(
+      "Pulling changes since",
+      lastCheckpoint?.modified,
+      "with query",
+      (query as any)["url"].toString()
+    )
 
     const { data, error } = await query
     if (error) throw error
@@ -214,7 +219,7 @@ export class SupabaseReplication<RxDocType> extends RxReplicationState<
   ): Promise<WithDeleted<RxDocType>[]> {
     if (rows.length != 1) throw new Error("Invalid batch size")
     const row = rows[0]
-    //console.debug("Pushing changes...", row.newDocumentState)
+    console.debug("Pushing changes...", row.newDocumentState)
     return row.assumedMasterState
       ? this.handleUpdate(row)
       : this.handleInsertion(row.newDocumentState)
@@ -277,7 +282,7 @@ export class SupabaseReplication<RxDocType> extends RxReplicationState<
       .channel(`rxdb-supabase-${this.replicationIdentifierHash}`)
       .on("postgres_changes", { event: "*", schema: "public", table: this.table }, (payload) => {
         if (payload.eventType === "DELETE" || !payload.new) return // Should have set _deleted field already
-        //console.debug('Realtime event received:', payload)
+        console.debug("Realtime event received:", payload)
         this.realtimeChanges.next({
           checkpoint: this.rowToCheckpoint(payload.new),
           documents: [this.rowToRxDoc(payload.new)],
