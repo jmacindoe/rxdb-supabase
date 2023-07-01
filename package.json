@@ -1,5 +1,5 @@
 {
-  "name": "rxdb-supabase",
+  "name": "@jmacindoe/rxdb-supabase",
   "version": "1.0.1",
   "description": "Offline support for Supabase using RxDB, an offline-first database",
   "keywords": [
@@ -11,7 +11,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/marceljuenemann/rxdb-supabase.git"
+    "url": "https://github.com/jmacindoe/rxdb-supabase.git"
   },
   "author": {
     "name": "Marcel Juenemann",
@@ -19,8 +19,6 @@
     "url": "https://marcel.world/"
   },
   "type": "module",
-  "exports": "./build/supabase-replication.js",
-  "types": "./build/src/supabase-replication.d.ts",
   "license": "MIT",
   "engines": {
     "node": "^18.15.0",
